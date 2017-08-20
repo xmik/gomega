@@ -30,8 +30,10 @@ func (matcher *HaveOccurredMatcher) FailureMessage(actual interface{}) (message 
 }
 
 func (matcher *HaveOccurredMatcher) NegatedFailureMessage(actual interface{}) (message string) {
-	return fmt.Sprintf("Expected error:\n%s\n%s\n%s\n%s",
+	return fmt.Sprintf("Expected error:\n%s\n%s\n%s\n%s\n%+v",
 		format.Object(actual, 1),
 		format.IndentString(actual.(error).Error(), 1),
-		format.IndentString(string(debug.Stack()), 1), "not to have occurred")
+		format.IndentString(string(debug.Stack()), 1),
+		actual.(error),
+		"not to have occurred")
 }
