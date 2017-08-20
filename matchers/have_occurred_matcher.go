@@ -2,6 +2,7 @@ package matchers
 
 import (
 	"fmt"
+	"runtime/debug"
 
 	"github.com/onsi/gomega/format"
 )
@@ -29,5 +30,8 @@ func (matcher *HaveOccurredMatcher) FailureMessage(actual interface{}) (message 
 }
 
 func (matcher *HaveOccurredMatcher) NegatedFailureMessage(actual interface{}) (message string) {
-	return fmt.Sprintf("Expected error:\n%s\n%s\n%s", format.Object(actual, 1), format.IndentString(actual.(error).Error(), 1), "not to have occurred")
+	return fmt.Sprintf("Expected error:\n%s\n%s\n%s\n%s",
+		format.Object(actual, 1),
+		format.IndentString(actual.(error).Error(), 1),
+		format.IndentString(string(debug.Stack()), 1), "not to have occurred")
 }
